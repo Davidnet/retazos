@@ -316,9 +316,10 @@ def pack_A1_0(data: List[float]) -> Union[float, List[float]]:
     assert data == sorted(data, reverse=True), "data must be sorted (desc)"
     placed_circles = []
     radiuses = [math.sqrt(value) for value in data]
+    # TODO(Davidnet): next_ lookahead not used.
     for radius, next_ in look_ahead(radiuses):
         placed_circles = place_new_A1_0(
-            radius, next_, placed_circles, get_hole_degree_radius_w
+            radius, placed_circles, get_hole_degree_radius_w
         )
     return placed_circles
 
@@ -545,7 +546,7 @@ def _flatten(elements, flattened):
     return flattened
 
 
-def circlify(
+def compute_retazo(
     data: List,
     target_enclosure: Optional[Circle] = None,
     show_enclosure=False,
@@ -563,7 +564,7 @@ def circlify(
         children_field: dict field name
 
     Returns:
-        list of circlify.Circle whose *area* is proportional to the
+        list of Circle whose *area* is proportional to the
         corresponding input value.  The list is sorted by ascending level
         (root to leaf) and descending value (biggest circles first).
 
